@@ -1,30 +1,34 @@
 package GUI;
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 /**
  *
  * @author david
  */
 
-public class GUI extends Application{
-    double WIDTH = 800;
+public class GUI extends Application {
+    
+    double WIDTH = 900;
     double HEIGHT = 700;
-    double cordX = 300;
-    double cordY = 100;
-    double xSpeed = 15;
-    double ySpeed = 100;
+    
+    double enemyCoordX = 100;
+    double enemyCoordY = 25;
+    double enemyXSpeed = 10;
+    double enemyYSpeed = 20;
+    
+    double defCoordX = 400;
+    double defCoordY = 590;
+    
+    double iconSize = 75;
     
     public static void main (String[] args){
         launch(args);
@@ -34,49 +38,79 @@ public class GUI extends Application{
     public void start(Stage theStage){
         
         theStage.setTitle("SpaceInvaders");
-        
+        theStage.setMaxHeight(HEIGHT);
+        theStage.setMaxWidth(WIDTH);
+        theStage.setResizable(false);
+         
         Group root = new Group();
-        Scene theScene = new Scene(root, WIDTH, HEIGHT);
-        
-        Image enemie = new Image("/GUI/enemie.png");
-        ImageView iv = new ImageView(enemie);
-        iv.setX(cordX);
-        iv.setY(cordY);
-        iv.setFitHeight(75);
-        iv.setFitWidth(75);
+        Scene theScene = new Scene(root);
         
         Image background = new Image("/GUI/space.jpg");
         ImageView bg = new ImageView(background);
-        iv.autosize();
+        bg.setFitWidth(WIDTH);
+        bg.setFitHeight(HEIGHT);
         
-        root.getChildren().addAll(bg, iv);
+        Image enemy = new Image("/GUI/enemie.png");
+        ImageView ene = new ImageView(enemy);
+        ene.setX(enemyCoordX);
+        ene.setY(enemyCoordY);
+        ene.setFitHeight(iconSize);
+        ene.setFitWidth(iconSize);
+        
+        animateEnemyBattleShip(ene);
+        
+        Image defender = new Image("/GUI/defender.png");
+        ImageView def = new ImageView(defender);
+        def.setX(defCoordX);
+        def.setY(defCoordY);
+        def.setFitHeight(iconSize);
+        def.setFitWidth(iconSize);
+        
+        controlDefenderShip(theScene, def);
+
+        root.getChildren().addAll(bg, ene, def);
         
         theStage.setScene(theScene);
         theStage.show();
-        
+    }
+    
+    public void animateEnemyBattleShip(ImageView iv){
         AnimationTimer animator = new AnimationTimer(){
             @Override
             public void handle(long arg0){
-                cordX += xSpeed;
+                enemyCoordX += enemyXSpeed;
                 
-                if(cordX + 75 >= WIDTH){
-                    cordX = WIDTH - 75;
-                    cordY += ySpeed;
-                    xSpeed *= -1;
+                if(enemyCoordX + iconSize >= WIDTH){
+                    enemyCoordX = WIDTH - iconSize;
+                    enemyCoordY += enemyYSpeed;
+                    enemyXSpeed *= -1;
                 }
-                else if(cordX  < 0){
-                    cordX = 0;
-                    cordY += ySpeed;
-                    xSpeed *= -1;
+                else if(enemyCoordX  < 0){
+                    enemyCoordX = 0;
+                    enemyCoordY += enemyYSpeed;
+                    enemyXSpeed *= -1;
                 }
-                else if(cordY == (HEIGHT - 75)){
+                else if(enemyCoordY == (HEIGHT - iconSize*2)){
                     stop();
                 }
                 
-                iv.relocate(cordX, cordY);
+                iv.relocate(enemyCoordX, enemyCoordY);
             }
         };
         animator.start();
+    }
+    
+    public void controlDefenderShip(Scene scene, ImageView def){
+        scene.setOnKeyPressed((KeyEvent arg0) -> {
+            if(arg0.getCode() == KeyCode.RIGHT && defCoordX+iconSize < WIDTH){
+                defCoordX += 10;
+                def.setX(defCoordX);
+            }
+            else if(arg0.getCode() == KeyCode.LEFT && defCoordX > 0){
+                defCoordX -= 10;
+                def.setX(defCoordX);
+            }
+        });
         
     }
 }
