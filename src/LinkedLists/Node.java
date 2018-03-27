@@ -34,6 +34,7 @@ public class Node {
     public Node getPrev(){
         return this.prev;
     }
+    
     public void setNext(Node next){
         this.next = next;
     }

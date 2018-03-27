@@ -1,5 +1,6 @@
 package GUI;
 
+import SpaceInvaders.Ship;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 /**
  *
  * @author david
@@ -22,7 +24,7 @@ public class GUI extends Application {
     
     double enemyCoordX = 100;
     double enemyCoordY = 25;
-    double enemyXSpeed = 10;
+    double enemyXSpeed = 7;
     double enemyYSpeed = 20;
     
     double defCoordX = 400;
@@ -50,8 +52,9 @@ public class GUI extends Application {
         bg.setFitWidth(WIDTH);
         bg.setFitHeight(HEIGHT);
         
-        Image enemy = new Image("/GUI/enemie.png");
-        ImageView ene = new ImageView(enemy);
+        int um = 5 + (int)(Math.random() * ((10-5)+1));//Obtiene un numero al azar entre 5 y 10 incluyendo el 10
+        Ship enemy = new Ship("/GUI/enemie.png", false, true, false);
+        ImageView ene = new ImageView(enemy.getLogo());
         ene.setX(enemyCoordX);
         ene.setY(enemyCoordY);
         ene.setFitHeight(iconSize);
@@ -59,8 +62,8 @@ public class GUI extends Application {
         
         animateEnemyBattleShip(ene);
         
-        Image defender = new Image("/GUI/defender.png");
-        ImageView def = new ImageView(defender);
+        Ship defender = new Ship("/GUI/defender.png", true, false, false);
+        ImageView def = new ImageView(defender.getLogo());
         def.setX(defCoordX);
         def.setY(defCoordY);
         def.setFitHeight(iconSize);
@@ -74,7 +77,7 @@ public class GUI extends Application {
         theStage.show();
     }
     
-    public void animateEnemyBattleShip(ImageView iv){
+    private void animateEnemyBattleShip(ImageView iv){
         AnimationTimer animator = new AnimationTimer(){
             @Override
             public void handle(long arg0){
@@ -100,7 +103,7 @@ public class GUI extends Application {
         animator.start();
     }
     
-    public void controlDefenderShip(Scene scene, ImageView def){
+    private void controlDefenderShip(Scene scene, ImageView def){
         scene.setOnKeyPressed((KeyEvent arg0) -> {
             if(arg0.getCode() == KeyCode.RIGHT && defCoordX+iconSize < WIDTH){
                 defCoordX += 10;
@@ -113,4 +116,5 @@ public class GUI extends Application {
         });
         
     }
+    
 }
