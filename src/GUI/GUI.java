@@ -1,6 +1,9 @@
 package GUI;
 
-import SpaceInvaders.Ship;
+import LinkedLists.SimpleLinkedList;
+import SpaceInvaders.DefenderShip;
+import SpaceInvaders.EnemyShip;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -22,10 +25,10 @@ public class GUI extends Application {
     double WIDTH = 900;
     double HEIGHT = 700;
     
-    double enemyCoordX = 100;
-    double enemyCoordY = 25;
-    double enemyXSpeed = 7;
-    double enemyYSpeed = 20;
+    double enemyCoordX = 5;
+    double enemyCoordY = 50;
+    double enemyXSpeed = 0.25;
+    double enemyYSpeed = 5;
     
     double defCoordX = 400;
     double defCoordY = 590;
@@ -51,18 +54,30 @@ public class GUI extends Application {
         ImageView bg = new ImageView(background);
         bg.setFitWidth(WIDTH);
         bg.setFitHeight(HEIGHT);
+        root.getChildren().add(bg);
         
-        int um = 5 + (int)(Math.random() * ((10-5)+1));//Obtiene un numero al azar entre 5 y 10 incluyendo el 10
-        Ship enemy = new Ship("/GUI/enemie.png", false, true, false);
-        ImageView ene = new ImageView(enemy.getLogo());
-        ene.setX(enemyCoordX);
-        ene.setY(enemyCoordY);
-        ene.setFitHeight(iconSize);
-        ene.setFitWidth(iconSize);
+        int um = 4 + (int)(Math.random() * ((8-4)+1));//Obtiene un numero al azar entre 4 y 8 incluyendo el 8
+        SimpleLinkedList row = new SimpleLinkedList();
+        for(int i = 1; i <= um; i++){
+            EnemyShip enemy = new EnemyShip("/GUI/enemie.png", enemyCoordX, enemyCoordY, i, false);
+            row.insertEnd(enemy);
+            enemyCoordX += WIDTH/um;
+        }
         
-        animateEnemyBattleShip(ene);
+        int count = 1;
+        while(count <= row.getSize()){
+            EnemyShip enemy = row.getData(count);
+            ImageView ene = new ImageView(enemy.getLogo());
+            ene.setX(enemy.getCoordX());
+            ene.setY(enemy.getCoordY());
+            ene.setFitHeight(iconSize);
+            ene.setFitWidth(iconSize);
+            root.getChildren().add(ene);
+            count++;
+            animateEnemyBattleShip(ene, um);
+        }
         
-        Ship defender = new Ship("/GUI/defender.png", true, false, false);
+        DefenderShip defender = new DefenderShip("/GUI/defender.png", defCoordX, defCoordY);
         ImageView def = new ImageView(defender.getLogo());
         def.setX(defCoordX);
         def.setY(defCoordY);
@@ -70,25 +85,23 @@ public class GUI extends Application {
         def.setFitWidth(iconSize);
         
         controlDefenderShip(theScene, def);
-
-        root.getChildren().addAll(bg, ene, def);
+        root.getChildren().add(def);
         
         theStage.setScene(theScene);
         theStage.show();
     }
     
-    private void animateEnemyBattleShip(ImageView iv){
+    private void animateEnemyBattleShip(ImageView iv, int um){
         AnimationTimer animator = new AnimationTimer(){
             @Override
             public void handle(long arg0){
                 enemyCoordX += enemyXSpeed;
-                
-                if(enemyCoordX + iconSize >= WIDTH){
-                    enemyCoordX = WIDTH - iconSize;
+                if(enemyCoordX  >= WIDTH/(2*um)){
+                    enemyCoordX = WIDTH/(2*um) - enemyXSpeed;
                     enemyCoordY += enemyYSpeed;
                     enemyXSpeed *= -1;
                 }
-                else if(enemyCoordX  < 0){
+                else if(enemyCoordX < 0){
                     enemyCoordX = 0;
                     enemyCoordY += enemyYSpeed;
                     enemyXSpeed *= -1;
@@ -96,8 +109,8 @@ public class GUI extends Application {
                 else if(enemyCoordY == (HEIGHT - iconSize*2)){
                     stop();
                 }
-                
-                iv.relocate(enemyCoordX, enemyCoordY);
+                iv.setTranslateX(enemyCoordX);
+                iv.setTranslateY(enemyCoordY);
             }
         };
         animator.start();

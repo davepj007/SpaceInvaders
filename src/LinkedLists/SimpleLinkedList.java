@@ -1,6 +1,7 @@
 package LinkedLists;
 
 import SpaceInvaders.Ship;
+import SpaceInvaders.EnemyShip;
 
 /**
  *
@@ -14,7 +15,12 @@ public class SimpleLinkedList extends LinkedList {
     }
     
     @Override
-    public Ship getData(int shipPos){
+    public int getSize(){
+        return this.size;
+    }
+    
+    @Override
+    public EnemyShip getData(int shipPos){
         Node current = head;
         while(current != null){
             if(current.getData().getShipPos() == shipPos){
@@ -26,7 +32,7 @@ public class SimpleLinkedList extends LinkedList {
     }
     
     @Override
-    public void insertEnd(Ship ship){
+    public void insertEnd(EnemyShip ship){
         Node newNode = new Node(ship, null);
         if(head == null){
             head = newNode;
@@ -42,7 +48,7 @@ public class SimpleLinkedList extends LinkedList {
     }
     
     @Override
-    public void deleteNode(Ship ship){
+    public void deleteNode(EnemyShip ship){
         Node current = head;
         if(current.getNext().getData() == null && current.getData() == ship){
             head = null; 

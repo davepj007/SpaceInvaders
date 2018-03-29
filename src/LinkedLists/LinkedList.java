@@ -1,6 +1,6 @@
 package LinkedLists;
 
-import SpaceInvaders.Ship;
+import SpaceInvaders.EnemyShip;
 
 /**
  *
@@ -11,9 +11,11 @@ public abstract class LinkedList {
     protected Node tail;
     protected int size;
     
-    public abstract Ship getData(int shipCode);
+    public abstract int getSize();
     
-    public abstract void insertEnd(Ship ship);
+    public abstract EnemyShip getData(int shipCode);
     
-    public abstract void deleteNode(Ship ship);
+    public abstract void insertEnd(EnemyShip ship);
+    
+    public abstract void deleteNode(EnemyShip ship);
 }

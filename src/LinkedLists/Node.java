@@ -1,27 +1,28 @@
 
 package LinkedLists;
 
-import SpaceInvaders.Ship;
+import SpaceInvaders.EnemyShip;
 
 /**
  *
  * @author david
  */
+
 public class Node {
     private Node prev;
     private Node next;
-    private Ship data;
+    private EnemyShip data;
     
-    public Node(Ship data){
+    public Node(EnemyShip data){
         this.data = data;
     }
     
-    public Node(Ship data, Node next){
+    public Node(EnemyShip data, Node next){
         this.data = data;
         this.next = next;
     }
     
-    public Node(Ship data, Node prev, Node next){
+    public Node(EnemyShip data, Node prev, Node next){
         this.data = data;
         this.prev = prev;
         this.next = next;
@@ -43,11 +44,11 @@ public class Node {
         return this.next;
     }
     
-    public void setData(Ship data){
+    public void setData(EnemyShip data){
         this.data = data;
     }
     
-    public Ship getData(){
+    public EnemyShip getData(){
         return this.data;
     }
 }

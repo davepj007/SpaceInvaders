@@ -1,6 +1,6 @@
 package LinkedLists;
 
-import SpaceInvaders.Ship;
+import SpaceInvaders.EnemyShip;
 
 /**
  *
@@ -14,7 +14,12 @@ public class CircularLinkedList extends LinkedList{
     }
     
     @Override
-    public Ship getData(int shipPos){
+    public int getSize(){
+        return this.size;
+    }
+    
+    @Override
+    public EnemyShip getData(int shipPos){
         Node current = tail;
         if(current.getData().getShipPos() == shipPos){
             return current.getData();
@@ -33,7 +38,7 @@ public class CircularLinkedList extends LinkedList{
     }
     
     @Override
-    public void insertEnd(Ship ship){
+    public void insertEnd(EnemyShip ship){
         Node newNode = new Node(ship, null);
         if(tail != null){
             newNode.setNext(tail.getNext());
@@ -44,7 +49,7 @@ public class CircularLinkedList extends LinkedList{
     }
     
     @Override
-    public void deleteNode(Ship ship){
+    public void deleteNode(EnemyShip ship){
         Node current = tail;
         if(current.getData() == ship && current.getNext() == tail){
             tail = null;
