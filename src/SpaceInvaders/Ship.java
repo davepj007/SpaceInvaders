@@ -14,7 +14,7 @@ public abstract class Ship {
         return coordX;
     }
 
-    public void setCoordX(int coordX){
+    public void setCoordX(double coordX){
         this.coordX = coordX;
     }
 
@@ -22,7 +22,7 @@ public abstract class Ship {
         return this.coordY;
     }
     
-    public void setCoordY(int coordY){
+    public void setCoordY(double coordY){
         this.coordY = coordY;
     }
     

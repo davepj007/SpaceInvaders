@@ -3,6 +3,7 @@ package GUI;
 import LinkedLists.SimpleLinkedList;
 import SpaceInvaders.DefenderShip;
 import SpaceInvaders.EnemyShip;
+import SpaceInvaders.Lasser;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Ellipse;
 
 /**
  *
@@ -25,13 +27,14 @@ public class GUI extends Application {
     double WIDTH = 900;
     double HEIGHT = 700;
     
-    double enemyCoordX = 5;
+    double enemyCoordX = 7.5;
     double enemyCoordY = 50;
     double enemyXSpeed = 0.25;
     double enemyYSpeed = 5;
     
     double defCoordX = 400;
     double defCoordY = 590;
+    double lasserSpeed = 10;
     
     double iconSize = 75;
     
@@ -56,7 +59,7 @@ public class GUI extends Application {
         bg.setFitHeight(HEIGHT);
         root.getChildren().add(bg);
         
-        int um = 4 + (int)(Math.random() * ((8-4)+1));//Obtiene un numero al azar entre 4 y 8 incluyendo el 8
+        int um = 4 + (int)(Math.random() * ((6-4)+1));//Obtiene un numero al azar entre 4 y 6 incluyendo el 6
         SimpleLinkedList row = new SimpleLinkedList();
         for(int i = 1; i <= um; i++){
             EnemyShip enemy = new EnemyShip("/GUI/enemie.png", enemyCoordX, enemyCoordY, i, false);
@@ -74,7 +77,7 @@ public class GUI extends Application {
             ene.setFitWidth(iconSize);
             root.getChildren().add(ene);
             count++;
-            animateEnemyBattleShip(ene, um);
+            animateEnemyBattleShip(enemy, ene, um);
         }
         
         DefenderShip defender = new DefenderShip("/GUI/defender.png", defCoordX, defCoordY);
@@ -84,14 +87,14 @@ public class GUI extends Application {
         def.setFitHeight(iconSize);
         def.setFitWidth(iconSize);
         
-        controlDefenderShip(theScene, def);
+        controlDefenderShip(theScene, def, root);
         root.getChildren().add(def);
         
         theStage.setScene(theScene);
         theStage.show();
     }
     
-    private void animateEnemyBattleShip(ImageView iv, int um){
+    private void animateEnemyBattleShip(EnemyShip enemy, ImageView iv, int um){
         AnimationTimer animator = new AnimationTimer(){
             @Override
             public void handle(long arg0){
@@ -109,14 +112,18 @@ public class GUI extends Application {
                 else if(enemyCoordY == (HEIGHT - iconSize*2)){
                     stop();
                 }
+                
                 iv.setTranslateX(enemyCoordX);
                 iv.setTranslateY(enemyCoordY);
+                
+                enemy.setCoordX(enemyCoordX);
+                enemy.setCoordY(enemyCoordY);
             }
         };
         animator.start();
     }
     
-    private void controlDefenderShip(Scene scene, ImageView def){
+    private void controlDefenderShip(Scene scene, ImageView def, Group root){
         scene.setOnKeyPressed((KeyEvent arg0) -> {
             if(arg0.getCode() == KeyCode.RIGHT && defCoordX+iconSize < WIDTH){
                 defCoordX += 10;
@@ -126,8 +133,22 @@ public class GUI extends Application {
                 defCoordX -= 10;
                 def.setX(defCoordX);
             }
+            else if(arg0.getCode() == KeyCode.UP){
+                Lasser lasser = new Lasser(defCoordX+iconSize/2, defCoordY - iconSize/2);
+                root.getChildren().add(lasser.getLasser());
+                animateLasser(lasser.getLasser());
+            }
         });
         
     }
     
+    private void animateLasser(Ellipse lasser){
+        AnimationTimer animator = new AnimationTimer(){
+            @Override
+            public void handle(long arg0){
+                lasser.setCenterY(lasser.getCenterY() - lasserSpeed);
+            }
+        };
+        animator.start();
+    }
 }
