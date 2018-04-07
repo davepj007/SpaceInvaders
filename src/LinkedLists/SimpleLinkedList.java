@@ -1,6 +1,5 @@
 package LinkedLists;
 
-import SpaceInvaders.Ship;
 import SpaceInvaders.EnemyShip;
 
 /**
@@ -12,6 +11,11 @@ public class SimpleLinkedList extends LinkedList {
     public SimpleLinkedList(){
         this.head = null;
         this.size = 0;
+    }
+   
+    @Override
+    public Node getFlag(){
+        return this.head;
     }
     
     @Override
@@ -49,26 +53,29 @@ public class SimpleLinkedList extends LinkedList {
     
     @Override
     public void deleteNode(EnemyShip ship){
-        Node current = head;
-        if(current.getNext().getData() == null && current.getData() == ship){
-            head = null; 
-            size--;
-        }
-        else if(current.getNext().getData() != null && current.getData() == ship){
-            head = current.getNext();
-            current.setNext(null);
-            size--;
-        }
-        else{
-            while(current.getNext() != null){
-                if(current.getNext().getData() == ship){
-                    current.setNext(current.getNext().getNext());
-                    size--;
-                }
-                else{
-                    current = current.getNext();
+        try{
+            Node current = head;
+            if(current.getNext().getData() == null && current.getData() == ship){
+                head = null; 
+                size--;
+            }
+            else if(current.getNext().getData() != null && current.getData() == ship){
+                head = current.getNext();
+                current.setNext(null);
+                size--;
+            }
+            else{
+                while(current.getNext() != null){
+                    if(current.getNext().getData() == ship){
+                        current.setNext(current.getNext().getNext());
+                        size--;
+                    }
+                    else{
+                        current = current.getNext();
+                    }
                 }
             }
+        }catch(NullPointerException ex){
         }
     }
 }

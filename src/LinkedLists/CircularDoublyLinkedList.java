@@ -14,6 +14,11 @@ public class CircularDoublyLinkedList extends LinkedList {
     }
     
     @Override
+    public Node getFlag(){
+        return this.head;
+    }
+    
+    @Override
     public int getSize(){
         return this.size;
     }
@@ -55,33 +60,36 @@ public class CircularDoublyLinkedList extends LinkedList {
     
     @Override
     public void deleteNode(EnemyShip ship){
-        Node current = head;
-        if(current.getNext() == head && current.getData() == ship){
-            head = null;
-            size--;
-        }
-        else if(current.getNext() != head && current.getData() == ship){
-            current = current.getPrev();
-            current.setNext(head.getNext());
-            head.getNext().setPrev(current);
-            head.setNext(null);
-            head.setPrev(null);
-            head = current.getNext();
-            size--;
-        }
-        else{
-            while(current.getNext() != head){
-                if(current.getNext().getData() == ship){
-                    current.getNext().setPrev(null);
-                    current.setNext(current.getNext().getNext());
-                    current.getNext().getPrev().setNext(null);
-                    current.getNext().setPrev(current);
-                    size--;
-                }
-                else{
-                    current = current.getNext();
+        try{
+            Node current = head;
+            if(current.getNext() == head && current.getData() == ship){
+                head = null;
+                size--;
+            }
+            else if(current.getNext() != head && current.getData() == ship){
+                current = current.getPrev();
+                current.setNext(head.getNext());
+                head.getNext().setPrev(current);
+                head.setNext(null);
+                head.setPrev(null);
+                head = current.getNext();
+                size--;
+            }
+            else{
+                while(current.getNext() != head){
+                    if(current.getNext().getData() == ship){
+                        current.getNext().setPrev(null);
+                        current.setNext(current.getNext().getNext());
+                        current.getNext().getPrev().setNext(null);
+                        current.getNext().setPrev(current);
+                        size--;
+                    }
+                    else{
+                        current = current.getNext();
+                    }
                 }
             }
+        }catch(NullPointerException ex){
         }
     }
 }

@@ -14,6 +14,11 @@ public class CircularLinkedList extends LinkedList{
     }
     
     @Override
+    public Node getFlag(){
+        return this.tail;
+    }
+    
+    @Override
     public int getSize(){
         return this.size;
     }
@@ -50,21 +55,24 @@ public class CircularLinkedList extends LinkedList{
     
     @Override
     public void deleteNode(EnemyShip ship){
-        Node current = tail;
-        if(current.getData() == ship && current.getNext() == tail){
-            tail = null;
-            size--;
-        }
-        else{
-            do{
-                if(current.getNext().getData() == ship){
-                    current.setNext(current.getNext().getNext());
-                    size--;
-                }
-                else{
-                    current = current.getNext();
-                }
-            }while(current != tail);
+        try{
+            Node current = tail;
+            if(current.getData() == ship && current.getNext() == tail){
+                tail = null;
+                size--;
+            }
+            else{
+                do{
+                    if(current.getNext().getData() == ship){
+                        current.setNext(current.getNext().getNext());
+                        size--;
+                    }
+                    else{
+                        current = current.getNext();
+                    }
+                }while(current != tail);
+            }
+        }catch(NullPointerException ex){
         }
     }
 }

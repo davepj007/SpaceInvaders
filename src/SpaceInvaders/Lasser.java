@@ -1,5 +1,9 @@
 package SpaceInvaders;
 
+import LinkedLists.LinkedList;
+import LinkedLists.Node;
+import javafx.animation.AnimationTimer;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -12,15 +16,20 @@ public class Lasser {
     private Ellipse lasser;
     private double coordX;
     private double coordY;
+    private final double height = 37.5;
+    private final double width = 3;
+    private final double lasserSpeed = 10;
     MotionBlur mb = new MotionBlur(0, 10);
     
     public Lasser(double coordX, double coordY){
         this.coordX = coordX;
         this.coordY = coordY;
-        this.lasser = new Ellipse(this.coordX, this.coordY,  5, 37.5);
-        this.lasser.setFill(Color.BLUE);
+        this.lasser = new Ellipse(this.coordX, this.coordY,  width, height);
+        this.lasser.setFill(Color.CYAN);
         this.lasser.setEffect(mb);
     }
+    
+    
     
     public void deleteLasser(){
         lasser.setVisible(false);
@@ -48,5 +57,13 @@ public class Lasser {
 
     public void setCoordY(double coordY) {
         this.coordY = coordY;
+    }
+    
+    public Rectangle2D getBounds(){
+        return new Rectangle2D(coordX, coordY, width, height);
+    }
+    
+    public boolean intersects(EnemyShip enemy){
+        return enemy.getBounds().intersects(this.getBounds());
     }
 }

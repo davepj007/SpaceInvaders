@@ -1,7 +1,8 @@
 package SpaceInvaders;
 
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 /**
  *
  * @author david
@@ -43,5 +44,13 @@ public class EnemyShip extends Ship {
 
     public void setShootsReceived(int shootsReceived) {
         this.shootsReceived = shootsReceived;
+    }
+    
+    public Rectangle2D getBounds(){
+        return new Rectangle2D(coordX, coordY, 70, 75);
+    }
+    
+    public void render(GraphicsContext gc){
+        gc.drawImage(this.logo, coordX, coordY, 75, 75);
     }
 }

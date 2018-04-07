@@ -14,6 +14,11 @@ public class DoublyLinkedList extends LinkedList {
     }
     
     @Override
+    public Node getFlag(){
+        return this.head;
+    }
+    
+    @Override
     public int getSize(){
         return this.size;
     }
@@ -49,29 +54,32 @@ public class DoublyLinkedList extends LinkedList {
     
     @Override
     public void deleteNode(EnemyShip ship){
-        Node current = head;
-        if(current.getNext().getData() == null && current.getData() == ship){
-            head = null; 
-            size--;
-        }
-        else if(current.getNext().getData() != null && current.getData() == ship){
-            head = current.getNext();
-            current.setNext(null);
-            head.setPrev(null);
-            size--;
-        }
-        else{
-            while(current.getNext() != null){
-                if(current.getNext().getData() == ship){
-                    current.getNext().setPrev(null);
-                    current.getNext().getNext().setPrev(current);
-                    current.setNext(current.getNext().getNext());
-                    size--;
-                }
-                else{
-                    current = current.getNext();
+        try{
+            Node current = head;
+            if(current.getNext().getData() == null && current.getData() == ship){
+                head = null; 
+                size--;
+            }
+            else if(current.getNext().getData() != null && current.getData() == ship){
+                head = current.getNext();
+                current.setNext(null);
+                head.setPrev(null);
+                size--;
+            }
+            else{
+                while(current.getNext() != null){
+                    if(current.getNext().getData() == ship){
+                        current.getNext().setPrev(null);
+                        current.getNext().getNext().setPrev(current);
+                        current.setNext(current.getNext().getNext());
+                        size--;
+                    }
+                    else{
+                        current = current.getNext();
+                    }
                 }
             }
+        }catch(NullPointerException ex){
         }
     }
 }

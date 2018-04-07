@@ -11,6 +11,8 @@ public abstract class LinkedList {
     protected Node tail;
     protected int size;
     
+    public abstract Node getFlag();
+    
     public abstract int getSize();
     
     public abstract EnemyShip getData(int shipCode);
