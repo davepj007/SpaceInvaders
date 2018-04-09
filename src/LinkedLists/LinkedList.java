@@ -20,4 +20,14 @@ public abstract class LinkedList {
     public abstract void insertEnd(EnemyShip ship);
     
     public abstract void deleteNode(EnemyShip ship);
+    
+    public void deleteAllNodes(){
+        try{
+            while (this.getFlag() != null) {
+                Node current = this.getFlag();
+                this.deleteNode(current.getData());
+            }
+        }catch(NullPointerException ex){
+        }
+    }
 }

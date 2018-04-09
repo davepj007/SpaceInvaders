@@ -1,7 +1,5 @@
 package SpaceInvaders;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 /**
  *
@@ -10,15 +8,17 @@ import javafx.scene.image.Image;
 
 public class EnemyShip extends Ship {
     private int shipPos;
-    private boolean boss;
+    private boolean isBoss;
+    private int shootsRequired;
     private int shootsReceived;
     
-    public EnemyShip(String logo, double coordX, double coordY, int shipPos, boolean boss){
+    public EnemyShip(String logo, double coordX, double coordY, int shipPos){
         this.logo = new Image (logo);
         this.coordX = coordX;
         this.coordY = coordY;
         this.shipPos = shipPos;
-        this.boss = boss;
+        this.isBoss = false;
+        this.shootsRequired = 0;
         this.shootsReceived = 0;
     }
     
@@ -30,12 +30,12 @@ public class EnemyShip extends Ship {
         this.shipPos = shipPos;
     }
 
-    public boolean isBoss() {
-        return boss;
+    public boolean getIsBoss() {
+        return isBoss;
     }
 
-    public void setBoss(boolean boss) {
-        this.boss = boss;
+    public void setIsBoss(boolean isBoss) {
+        this.isBoss = isBoss;
     }
 
     public int getShootsReceived() {
@@ -46,11 +46,12 @@ public class EnemyShip extends Ship {
         this.shootsReceived = shootsReceived;
     }
     
-    public Rectangle2D getBounds(){
-        return new Rectangle2D(coordX, coordY, 70, 75);
+    public int getShootsRequired(){
+        return shootsRequired;
     }
     
-    public void render(GraphicsContext gc){
-        gc.drawImage(this.logo, coordX, coordY, 75, 75);
+    public void setShootsRequired(){
+        this.shootsRequired = 2 + (int)(Math.random() * ((5-2)+1));
+        System.out.println(this.shootsRequired);
     }
 }

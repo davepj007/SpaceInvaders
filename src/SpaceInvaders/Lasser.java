@@ -1,5 +1,6 @@
 package SpaceInvaders;
 
+import GUI.GUI;
 import LinkedLists.LinkedList;
 import LinkedLists.Node;
 import javafx.animation.AnimationTimer;

@@ -1,12 +1,15 @@
 package GUI;
 
-import LinkedLists.CircularDoublyLinkedList;
-import LinkedLists.CircularLinkedList;
-import LinkedLists.DoublyLinkedList;
 import LinkedLists.LinkedList;
 import LinkedLists.Node;
-import LinkedLists.SimpleLinkedList;
+import SpaceInvaders.BasicEnemyRow;
 import SpaceInvaders.DefenderShip;
+import SpaceInvaders.EnemyRow;
+import SpaceInvaders.EnemyRowA;
+import SpaceInvaders.EnemyRowB;
+import SpaceInvaders.EnemyRowC;
+import SpaceInvaders.EnemyRowD;
+import SpaceInvaders.EnemyRowE;
 import SpaceInvaders.EnemyShip;
 import SpaceInvaders.Lasser;
 
@@ -22,6 +25,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 /**
  *
  * @author david
@@ -34,16 +38,12 @@ public class GUI extends Application {
     Canvas canvas = new Canvas(900,700);
     GraphicsContext gc;
     
+    EnemyRow row;
     LinkedList enemyRow;
     
     double WIDTH = 900;
     double HEIGHT = 700;
-    
-    double enemyCoordX = 10;
-    double enemyCoordY = 50;
-    double enemyXSpeed = 2;
-    double enemyYSpeed = 0.25;
-    
+  
     double defCoordX = 400;
     double defCoordY = 590;
     double lasserSpeed = 10;
@@ -51,7 +51,7 @@ public class GUI extends Application {
     double iconSize = 75;
     
     boolean bool;
-    int level = 1;
+    int level = 2;
 
     public static void main (String[] args){
         launch(args);
@@ -69,13 +69,14 @@ public class GUI extends Application {
         theScene = new Scene(root);
         theStage.setScene(theScene);
         
-        
         Image background = new Image("/GUI/space.jpg");
         ImageView bg = new ImageView(background);
         bg.setFitWidth(WIDTH);
         bg.setFitHeight(HEIGHT);
         root.getChildren().add(bg);
         
+        gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, 900, 700);
         //********************************* CREA LA NAVE DEFENSORA **********************************//
         DefenderShip defender = new DefenderShip("/GUI/defender.png", defCoordX, defCoordY);
         ImageView def = new ImageView(defender.getLogo());
@@ -84,114 +85,56 @@ public class GUI extends Application {
         def.setFitHeight(iconSize);
         def.setFitWidth(iconSize);
         controlDefenderShip(theScene, def);
-        //*******************************************************************************************//
-        
         root.getChildren().add(def);
+        //*******************************************************************************************//
                
         //******************************** CREA LAS HILERAS ENEMIGAS ********************************//
-        createLinkedList();
-        
-        createEnemyRow();
+        chooseEnemyRow();
         
         //*******************************************************************************************//
         root.getChildren().add(canvas); 
         theStage.show();
     }
     
-    public void createLinkedList(){
-        int size = 4 + (int)(Math.random() * ((6-4)+1));//Obtiene un num random entre 4 y 6 incluyendo 6
-        chooseList();       
-        for(int i = 1; i <= size; i++){
-            EnemyShip enemy = new EnemyShip("/GUI/enemie.png", enemyCoordX, enemyCoordY, i, false);
-            enemyRow.insertEnd(enemy);
-            enemyCoordX += WIDTH/size;
-        }
-        bool = true;
-    }
-    
-    public void chooseList(){
-        int list = 1 + (int)(Math.random() * ((3-1)+1)); 
+    public void chooseEnemyRow(){
+        int list = 2;//1 + (int)(Math.random() * ((3-1)+1)); 
         switch(level){
             case 1:
-                enemyRow = new SimpleLinkedList();
+                row = new BasicEnemyRow();
                 break;
             case 2:
                 if (list == 1){
-                    enemyRow = new SimpleLinkedList();
+                    row = new EnemyRowA();
                 }else{
-                    enemyRow = new DoublyLinkedList();
+                    row = new EnemyRowB();
                 }
                 break;
             case 3:
-                switch (list) {
-                    case 1:
-                        enemyRow = new SimpleLinkedList();
-                        break;
-                    case 2:
-                        enemyRow = new DoublyLinkedList();
-                        break;
-                    case 3:
-                        enemyRow = new CircularLinkedList();
-                        break;
+                if(list != 3){
+                    row = new EnemyRowB();
+                }else{
+                    row = new EnemyRowC();
                 }
                 break;
             default:
                 switch(list){
                     case 1:
-                        enemyRow = new DoublyLinkedList();
+                        row = new EnemyRowC();
                         break;
                     case 2:
-                        enemyRow = new CircularLinkedList();
+                        row = new EnemyRowD();
                         break;
                     case 3:
-                        enemyRow = new CircularDoublyLinkedList();
+                        row = new EnemyRowE();
+                        break;
                 }
         }
+        row.setEnemyRow();
+        enemyRow = row.getEnemyRow();
+        row.setBool(true);
+        row.createEnemyRow(gc);
     }
-    
-    private void createEnemyRow(){
-        gc = canvas.getGraphicsContext2D();
-        Node current = enemyRow.getFlag();
-        while(current != null){
-            EnemyShip enemy = current.getData();
-            enemy.render(gc);
-            if(bool == true){
-                animateEnemyBattleShip(enemy, gc);
-            }
-            current = current.getNext();
-        }
-        bool = false;
-        
-    }
-    
-    private void animateEnemyBattleShip(EnemyShip enemy, GraphicsContext gc){
-        double posIni = enemy.getCoordX();
-        AnimationTimer animator = new AnimationTimer(){
-            @Override
-            public void handle(long arg0){ 
-                gc.clearRect(enemy.getCoordX(), enemy.getCoordY(), 900, 700);
-                
-                enemy.setCoordX(enemy.getCoordX() + enemyXSpeed);
-                enemy.setCoordY(enemy.getCoordY() + enemyYSpeed);
 
-                if(enemy.getCoordX()  >= (posIni+iconSize)){
-                    enemy.setCoordX((posIni+iconSize)-enemyXSpeed);
-                    enemyXSpeed *= -1;
-                }
-                else if(enemy.getCoordX() < posIni){
-                    enemy.setCoordX(posIni);
-                    enemyXSpeed *= -1;
-                }
-                else if(enemy.getCoordY() == (HEIGHT - iconSize*2)){
-                    stop();
-                }      
-                
-                enemy.render(gc);
-            }
-        };
-        animator.start();
-    }
-    
     private void controlDefenderShip(Scene scene, ImageView def){
         scene.setOnKeyPressed((KeyEvent arg0) -> {
             if(arg0.getCode() == KeyCode.RIGHT && defCoordX+iconSize < WIDTH){
@@ -227,12 +170,17 @@ public class GUI extends Application {
                         if(lasser.intersects(enemy)){
                             lasser.deleteLasser();
                             stop();
-                            //enemy.setLogo(new Image("/GUI/explosion.gif"));
-                            enemy.setLogo(null);
-                            enemyRow.deleteNode(enemy);
-                            createEnemyRow();
-                            System.out.println(enemyRow.getSize());
-                            System.out.println("Impacto!");
+                            if(enemy.getIsBoss()){
+                                enemy.setShootsReceived(enemy.getShootsReceived()+1);
+                                if(enemy.getShootsRequired() == enemy.getShootsReceived()){
+                                    enemyRow.deleteAllNodes();
+                                }
+                            }else{
+                                //enemy.setLogo(new Image("/GUI/explosion.gif"));
+                                enemy.setLogo(null);
+                                enemyRow.deleteNode(enemy);
+                            }
+                            row.createEnemyRow(gc);
                         }
                         current = current.getNext();
                     }

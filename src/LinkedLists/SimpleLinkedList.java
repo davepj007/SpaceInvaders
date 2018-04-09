@@ -55,11 +55,11 @@ public class SimpleLinkedList extends LinkedList {
     public void deleteNode(EnemyShip ship){
         try{
             Node current = head;
-            if(current.getNext().getData() == null && current.getData() == ship){
+            if(current.getNext() == null && current.getData() == ship){
                 head = null; 
                 size--;
             }
-            else if(current.getNext().getData() != null && current.getData() == ship){
+            else if(current.getNext() != null && current.getData() == ship){
                 head = current.getNext();
                 current.setNext(null);
                 size--;

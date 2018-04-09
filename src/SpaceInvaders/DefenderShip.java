@@ -15,7 +15,7 @@ import javafx.scene.image.Image;
 public class DefenderShip extends Ship{
     
     public DefenderShip(String logo, double coordX, double coordY){
-        this.logo = new Image (logo);
+        this.logo = new Image(logo);
         this.coordX = coordX;
         this.coordY = coordY;
     }

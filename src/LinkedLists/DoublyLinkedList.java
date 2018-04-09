@@ -56,11 +56,11 @@ public class DoublyLinkedList extends LinkedList {
     public void deleteNode(EnemyShip ship){
         try{
             Node current = head;
-            if(current.getNext().getData() == null && current.getData() == ship){
+            if(current.getNext() == null && current.getData() == ship){
                 head = null; 
                 size--;
             }
-            else if(current.getNext().getData() != null && current.getData() == ship){
+            else if(current.getNext() != null && current.getData() == ship){
                 head = current.getNext();
                 current.setNext(null);
                 head.setPrev(null);
@@ -80,6 +80,47 @@ public class DoublyLinkedList extends LinkedList {
                 }
             }
         }catch(NullPointerException ex){
+        }
+    }
+    
+    public void changeNodePosition(Node nodeA, Node nodeB){
+        if(nodeA.getNext() == nodeB){
+            nodeA.setNext(nodeB.getNext());
+            nodeB.setPrev(nodeA.getPrev());
+            
+            if(nodeA.getNext() != null){
+                nodeA.getNext().setPrev(nodeA);
+            }
+            if(nodeB.getPrev() != null){
+                nodeB.getPrev().setNext(nodeB);
+            }
+            
+            nodeB.setNext(nodeA);
+            nodeA.setPrev(nodeB);
+            
+        }else{
+            Node temp1 = nodeB.getPrev();
+            Node temp2 = nodeB.getNext();
+            
+            nodeB.setPrev(nodeA.getPrev());
+            nodeB.setNext(nodeA.getNext());
+            
+            nodeA.setPrev(temp1);
+            nodeA.setNext(temp2);
+            
+            if(nodeB.getNext() != null){
+                nodeB.getNext().setPrev(nodeB);
+            }
+            if(nodeB.getPrev() != null){
+                nodeB.getPrev().setNext(nodeB);
+            }
+            
+            if(nodeA.getNext() != null){
+                nodeA.getNext().setPrev(nodeA);
+            }
+            if(nodeA.getPrev() != null){
+                nodeA.getPrev().setNext(nodeA);
+            }
         }
     }
 }
