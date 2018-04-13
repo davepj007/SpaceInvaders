@@ -1,6 +1,7 @@
 package LinkedLists;
 
 import SpaceInvaders.EnemyShip;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -83,44 +84,29 @@ public class DoublyLinkedList extends LinkedList {
         }
     }
     
+    @Override
     public void changeNodePosition(Node nodeA, Node nodeB){
-        if(nodeA.getNext() == nodeB){
-            nodeA.setNext(nodeB.getNext());
-            nodeB.setPrev(nodeA.getPrev());
-            
-            if(nodeA.getNext() != null){
-                nodeA.getNext().setPrev(nodeA);
-            }
-            if(nodeB.getPrev() != null){
-                nodeB.getPrev().setNext(nodeB);
-            }
-            
-            nodeB.setNext(nodeA);
-            nodeA.setPrev(nodeB);
-            
-        }else{
-            Node temp1 = nodeB.getPrev();
-            Node temp2 = nodeB.getNext();
-            
-            nodeB.setPrev(nodeA.getPrev());
-            nodeB.setNext(nodeA.getNext());
-            
-            nodeA.setPrev(temp1);
-            nodeA.setNext(temp2);
-            
-            if(nodeB.getNext() != null){
-                nodeB.getNext().setPrev(nodeB);
-            }
-            if(nodeB.getPrev() != null){
-                nodeB.getPrev().setNext(nodeB);
-            }
-            
-            if(nodeA.getNext() != null){
-                nodeA.getNext().setPrev(nodeA);
-            }
-            if(nodeA.getPrev() != null){
-                nodeA.getPrev().setNext(nodeA);
-            }
+        EnemyShip dataA = nodeA.getData();
+        Image logoA = dataA.getLogo();
+        EnemyShip dataB = nodeB.getData();
+        Image logoB = dataB.getLogo();
+        
+        nodeA.setData(dataB);
+        nodeB.setData(dataA);
+        
+        dataA.setIsBoss(false);
+        dataA.setLogo(logoB);
+        dataB.setIsBoss(true);
+        dataB.setLogo(logoA);
+    }
+    
+    public void printList(){
+        Node current = this.head;
+        System.out.print("[ ");
+        while(current.getNext() != null){
+            System.out.print(current.getData().getShipPos() + ", ");
+            current = current.getNext();
         }
+        System.out.println(current.getData().getShipPos() + " ]");
     }
 }

@@ -25,6 +25,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 /**
  *
@@ -50,7 +52,6 @@ public class GUI extends Application {
     
     double iconSize = 75;
     
-    boolean bool;
     int level = 2;
 
     public static void main (String[] args){
@@ -75,8 +76,14 @@ public class GUI extends Application {
         bg.setFitHeight(HEIGHT);
         root.getChildren().add(bg);
         
-        gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, 900, 700);
+        Line line = new Line();
+        line.setStartX(0);
+        line.setStartY(590);
+        line.setEndX(WIDTH);
+        line.setEndY(590);
+        line.setStroke(Color.DARKCYAN);
+        root.getChildren().add(line);
+       
         //********************************* CREA LA NAVE DEFENSORA **********************************//
         DefenderShip defender = new DefenderShip("/GUI/defender.png", defCoordX, defCoordY);
         ImageView def = new ImageView(defender.getLogo());
@@ -89,6 +96,8 @@ public class GUI extends Application {
         //*******************************************************************************************//
                
         //******************************** CREA LAS HILERAS ENEMIGAS ********************************//
+        gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0,0, WIDTH, HEIGHT);
         chooseEnemyRow();
         
         //*******************************************************************************************//
@@ -176,7 +185,6 @@ public class GUI extends Application {
                                     enemyRow.deleteAllNodes();
                                 }
                             }else{
-                                //enemy.setLogo(new Image("/GUI/explosion.gif"));
                                 enemy.setLogo(null);
                                 enemyRow.deleteNode(enemy);
                             }

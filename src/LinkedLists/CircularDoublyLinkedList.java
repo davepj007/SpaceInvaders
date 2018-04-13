@@ -92,4 +92,9 @@ public class CircularDoublyLinkedList extends LinkedList {
         }catch(NullPointerException ex){
         }
     }
+    
+    @Override
+    public void changeNodePosition(Node nodeA, Node nodeB){
+    
+    }
 }

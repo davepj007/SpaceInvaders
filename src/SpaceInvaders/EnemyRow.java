@@ -28,7 +28,7 @@ public abstract class EnemyRow {
         double posIni = enemy.getCoordX();
         AnimationTimer animator = new AnimationTimer(){
             @Override
-            public void handle(long arg0){ 
+            public void handle(long arg0){                 
                 gc.clearRect(enemy.getCoordX(), enemy.getCoordY(), 900, 700);
                 
                 enemy.setCoordX(enemy.getCoordX() + enemyXSpeed);
@@ -55,7 +55,7 @@ public abstract class EnemyRow {
     public void setEnemyRow() {
         int enemyCoordX = 10;
         int enemyCoordY = 50;
-        int size = 4 + (int)(Math.random() * ((6-4)+1));//Obtiene un num random entre 4 y 6 incluyendo 6     
+        int size = 5;// + (int)(Math.random() * ((6-4)+1));//Obtiene un num random entre 4 y 6 incluyendo 6     
         for(int i = 1; i <= size; i++){
             EnemyShip enemy = new EnemyShip("/GUI/enemie.png", enemyCoordX, enemyCoordY, i);
             enemyRow.insertEnd(enemy);

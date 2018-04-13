@@ -1,9 +1,5 @@
 package SpaceInvaders;
 
-import GUI.GUI;
-import LinkedLists.LinkedList;
-import LinkedLists.Node;
-import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.paint.Color;
@@ -19,7 +15,6 @@ public class Lasser {
     private double coordY;
     private final double height = 37.5;
     private final double width = 3;
-    private final double lasserSpeed = 10;
     MotionBlur mb = new MotionBlur(0, 10);
     
     public Lasser(double coordX, double coordY){
