@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package SpaceInvaders;
 
 import LinkedLists.LinkedList;
@@ -12,7 +7,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- *
+ * EnemyRow : Hilera enemiga
+ * 
  * @author david
  */
 public abstract class EnemyRow {
@@ -22,8 +18,19 @@ public abstract class EnemyRow {
     protected double enemyYSpeed;
     protected boolean bool;
     
+    /**
+     * Método encargado de crear la hilera enemiga a partir de una lista enlazada.
+     * 
+     * @param gc : GraphicsContext donde se dibujara la hilera.
+     */
     public abstract void createEnemyRow(GraphicsContext gc);
     
+    /**
+     * Método encargado de animar la hilera enemiga.
+     * 
+     * @param enemy : Nave enemiga
+     * @param gc : GraphicsContext donde se dibujará la nave recolocada
+     */
     public void animateEnemyRow(EnemyShip enemy, GraphicsContext gc){
         double posIni = enemy.getCoordX();
         AnimationTimer animator = new AnimationTimer(){
@@ -52,6 +59,10 @@ public abstract class EnemyRow {
         animator.start();
     }
     
+    /**
+     * Setter, se encarga de crear la lista enlazada en la cual se almacenarán las
+     * naves enemigas de la hilera.
+     */
     public void setEnemyRow() {
         int enemyCoordX = 10;
         int enemyCoordY = 50;
@@ -63,6 +74,12 @@ public abstract class EnemyRow {
         }
     }
     
+    /**
+     * Método encargado de escoger al jefe de la hilera al azar.
+     * 
+     * @param enemyRow : Lista enlazada donde se almacenan las naves
+     * @return EnemyShip : Nave enemiga
+     */
     public EnemyShip chooseBoss(LinkedList enemyRow){
         int shipPos = 1 + (int)(Math.random() * ((enemyRow.getSize()-1)+1));
         Node current = enemyRow.getFlag();
@@ -77,38 +94,89 @@ public abstract class EnemyRow {
         return null;
     }
     
+    /**
+     * Método encargado de ejecutar la destrucción del jefe.
+     */
+    public void executeBossDestroy(){
+        enemyRow.deleteAllNodes();
+    }
+    
+    /**
+     * Getter, retorna la lista enlazada donde están almacenadas las naves enemigas
+     * 
+     * @return LinkedList enemyRow : Lista enlazada.
+     */
     public LinkedList getEnemyRow() {
         return enemyRow;
     }
     
+    /**
+     * Setter, establece el jefe de la hilera enemiga.
+     * 
+     * @param boss : Jefe de la hilera.
+     */
     public void setBoss(EnemyShip boss){
         this.boss = boss;
     }
-    
+     /**
+      * Getter, retorna el jefe de la hilera enemiga
+      * 
+      * @return EnemyShip boss : Jefe de la hilera
+      */
     public EnemyShip getBoss(){
         return boss;
     }
     
+    /**
+     * Getter, retorna la velocidad en la coordenada X de la hilera
+     * 
+     * @return double enemyXSpeed : Velocidad en X de la hilera 
+     */
     public double getEnemyXSpeed() {
         return enemyXSpeed;
     }
-
+    
+    /**
+     * Setter, extablece la velocidad en la coordenada X de la hilera
+     * 
+     * @param enemyXSpeed : Velocidad en X de la hilera
+     */
     public void setEnemyXSpeed(double enemyXSpeed) {
         this.enemyXSpeed = enemyXSpeed;
     }
 
+    /**
+     * Getter, retorna la velocidad en la coordenada Y de la hilera
+     * 
+     * @return double enemyYSpeed : Velocidad en Y de la hilera 
+     */
     public double getEnemyYSpeed() {
         return enemyYSpeed;
     }
 
+    /**
+     * Setter, establece la velocidad en la coordenada Y de la hilera
+     * 
+     * @param enemyYSpeed : Velocidad en Y de la hilera.
+     */
     public void setEnemyYSpeed(double enemyYSpeed) {
         this.enemyYSpeed = enemyYSpeed;
     }
     
+    /**
+     * Getter, retorna el valor del booleano 
+     * 
+     * @return boolean bool : Valor booleano
+     */
     public boolean getBool(){
         return bool;
     }
     
+    /**
+     * Setter, establece el valor booleano a la variable bool
+     * 
+     * @param bool : Valor booleano
+     */
     public void setBool(boolean bool){
         this.bool = bool;
     }

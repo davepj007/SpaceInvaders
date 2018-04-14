@@ -9,11 +9,16 @@ import LinkedLists.Node;
 import LinkedLists.SimpleLinkedList;
 import javafx.scene.canvas.GraphicsContext;
 /**
- *
+ * EnemyRowA : Hilera enemiga clase A
+ * 
  * @author david
  */
 public class EnemyRowA extends EnemyRow {
     
+    /**
+     * Constructor
+     * EnemyRowA
+     */
     public EnemyRowA(){
         this.enemyRow = new SimpleLinkedList();
         this.boss = null;
@@ -30,6 +35,12 @@ public class EnemyRowA extends EnemyRow {
             enemyRow = this.getEnemyRow();
             bool = true;
         }
+        
+        if(bool == true){
+            this.setBoss(this.chooseBoss(enemyRow));
+            this.getBoss().setShootsRequired();
+        }
+        
         Node current = enemyRow.getFlag();
         while(current != null){
             EnemyShip enemy = current.getData();
@@ -38,10 +49,6 @@ public class EnemyRowA extends EnemyRow {
                 this.animateEnemyRow(enemy, gc);
             }
             current = current.getNext();
-        }
-        if(bool == true){
-            this.setBoss(this.chooseBoss(enemyRow));
-            this.getBoss().setShootsRequired();
         }
         this.bool = false;
     }

@@ -1,14 +1,18 @@
 package LinkedLists;
 
 import SpaceInvaders.EnemyShip;
-import javafx.scene.image.Image;
 
 /**
- *
+ * DoublyLinkedList : Lista doblemente enlazada, hereda de la clase abstracta LinkedList
+ * 
  * @author david
  */
 public class DoublyLinkedList extends LinkedList {
    
+    /**
+     * Constructor
+     * DoublyLinkedList
+     */
     public DoublyLinkedList(){
         this.head = null;
         this.size = 0;
@@ -82,31 +86,5 @@ public class DoublyLinkedList extends LinkedList {
             }
         }catch(NullPointerException ex){
         }
-    }
-    
-    @Override
-    public void changeNodePosition(Node nodeA, Node nodeB){
-        EnemyShip dataA = nodeA.getData();
-        Image logoA = dataA.getLogo();
-        EnemyShip dataB = nodeB.getData();
-        Image logoB = dataB.getLogo();
-        
-        nodeA.setData(dataB);
-        nodeB.setData(dataA);
-        
-        dataA.setIsBoss(false);
-        dataA.setLogo(logoB);
-        dataB.setIsBoss(true);
-        dataB.setLogo(logoA);
-    }
-    
-    public void printList(){
-        Node current = this.head;
-        System.out.print("[ ");
-        while(current.getNext() != null){
-            System.out.print(current.getData().getShipPos() + ", ");
-            current = current.getNext();
-        }
-        System.out.println(current.getData().getShipPos() + " ]");
     }
 }

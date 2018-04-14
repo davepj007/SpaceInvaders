@@ -4,15 +4,19 @@ import LinkedLists.DoublyLinkedList;
 import LinkedLists.Node;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 /**
- *
+ * EnemyRowB : Hilera enemiga clase B
+ * 
  * @author david
  */
 
 public class EnemyRowB extends EnemyRow{
     
+    /**
+     * Constructor
+     * EnemyRowB
+     */
     public EnemyRowB(){
         this.enemyRow = new DoublyLinkedList();
         this.boss = null;
@@ -22,8 +26,6 @@ public class EnemyRowB extends EnemyRow{
     
     @Override
     public void createEnemyRow(GraphicsContext gc){
-        gc.clearRect(0, 0, 900, 700);
-        
         if(enemyRow.getFlag() == null){
             this.setEnemyRow();
             this.setEnemyXSpeed(this.getEnemyXSpeed() + 0.10);
@@ -89,6 +91,12 @@ public class EnemyRowB extends EnemyRow{
         animator.start();
     }
     
+    /**
+     * Método encasrgado de buscar el nodo que contiene la nave jefe de la hilera
+     * enemiga
+     * 
+     * @return Node boss : Nodo que almacena al jefe de la hilera. 
+     */
     public Node searchBoss(){
         Node current = enemyRow.getFlag();
         while(current.getNext() != null){

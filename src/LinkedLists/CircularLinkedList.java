@@ -3,11 +3,16 @@ package LinkedLists;
 import SpaceInvaders.EnemyShip;
 
 /**
- *
+ * CircularLinkedList : Lista enlazada circular, hereda de la clase abstracta LinkedList
+ * 
  * @author david
  */
 public class CircularLinkedList extends LinkedList{
     
+    /**
+     * Constructor
+     * CircularLinkedList
+     */
     public CircularLinkedList(){
         this.tail = null;
         this.size = 0;
@@ -35,7 +40,7 @@ public class CircularLinkedList extends LinkedList{
                    return current.getData();
                }
                else{
-                   current.getNext();
+                   current = current.getNext();
                }
             }while(current != tail);
         }
@@ -48,6 +53,8 @@ public class CircularLinkedList extends LinkedList{
         if(tail != null){
             newNode.setNext(tail.getNext());
             tail.setNext(newNode);
+        }else{
+            newNode.setNext(newNode);
         }
         tail = newNode;
         size++;
@@ -74,10 +81,5 @@ public class CircularLinkedList extends LinkedList{
             }
         }catch(NullPointerException ex){
         }
-    }
-    
-    @Override
-    public void changeNodePosition(Node nodeA, Node nodeB){
-    
     }
 }

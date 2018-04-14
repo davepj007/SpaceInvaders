@@ -3,11 +3,16 @@ package LinkedLists;
 import SpaceInvaders.EnemyShip;
 
 /**
- *
+ * SimpleLinkedList : Lista enlazada simple, hereda de la clase abstracta LinkedList
+ * 
  * @author david
  */
 public class SimpleLinkedList extends LinkedList {
     
+    /**
+     * Constructor
+     * SimpleLinkedList
+     */
     public SimpleLinkedList(){
         this.head = null;
         this.size = 0;
@@ -77,10 +82,5 @@ public class SimpleLinkedList extends LinkedList {
             }
         }catch(NullPointerException ex){
         }
-    }
-    
-    @Override
-    public void changeNodePosition(Node nodeA, Node nodeB){
-    
     }
 }

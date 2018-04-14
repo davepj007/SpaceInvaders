@@ -3,7 +3,9 @@ package LinkedLists;
 import SpaceInvaders.EnemyShip;
 
 /**
- *
+ * CircularDoublyLinkedList : Lista circular doblemente enlazada, hereda de la
+ * clase abstracta LinkedList
+ * 
  * @author david
  */
 public class CircularDoublyLinkedList extends LinkedList {
@@ -91,10 +93,5 @@ public class CircularDoublyLinkedList extends LinkedList {
             }
         }catch(NullPointerException ex){
         }
-    }
-    
-    @Override
-    public void changeNodePosition(Node nodeA, Node nodeB){
-    
     }
 }

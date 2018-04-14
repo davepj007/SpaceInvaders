@@ -5,12 +5,17 @@ import LinkedLists.SimpleLinkedList;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- *
+ * BasicEnemyRow : Hilera enemiga basica
+ * 
  * @author david
  */
 
 public class BasicEnemyRow extends EnemyRow{
     
+    /**
+     * Constructor
+     * BasicEnemyRow
+     */
     public BasicEnemyRow(){
         this.enemyRow = new SimpleLinkedList();
         this.enemyXSpeed = 1.5;

@@ -29,12 +29,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
- *
- * @author david
+ * GUI: Interfaz Grafica
+ * 
+ * @author David Pereira Jimenez
+ * @version 1.0
  */
 
 public class GUI extends Application {
-    
     Scene theScene;
     Group root;
     Canvas canvas = new Canvas(900,700);
@@ -52,12 +53,17 @@ public class GUI extends Application {
     
     double iconSize = 75;
     
-    int level = 2;
+    int level = 3;
 
     public static void main (String[] args){
         launch(args);
     }
     
+    /**
+     * Inicializador de la interfaz grafica
+     * 
+     * @param theStage : La ventana donde se colocarán los objetos gráficos
+     */
     @Override
     public void start(Stage theStage){
         
@@ -105,8 +111,13 @@ public class GUI extends Application {
         theStage.show();
     }
     
+    /**
+     * Se encarga de escoger la hilera según el nivel en el que se encuentre el juego.
+     * Además de llamar a crear la lista correspondiente al tipo de hilera del nivel.
+     * Y por último llama al método encargado de crear la hilera enemiga.
+     */
     public void chooseEnemyRow(){
-        int list = 2;//1 + (int)(Math.random() * ((3-1)+1)); 
+        int list = 3;//1 + (int)(Math.random() * ((3-1)+1)); 
         switch(level){
             case 1:
                 row = new BasicEnemyRow();
@@ -143,7 +154,13 @@ public class GUI extends Application {
         row.setBool(true);
         row.createEnemyRow(gc);
     }
-
+    
+    /**
+     * Método encargado de controlar el movimiento y los disparos de la nave defensora.
+     * 
+     * @param scene : Escena donde aparecen los diferentes objetos gráficos.
+     * @param def : Imagen de la nave defensora que se mostrará.
+     */
     private void controlDefenderShip(Scene scene, ImageView def){
         scene.setOnKeyPressed((KeyEvent arg0) -> {
             if(arg0.getCode() == KeyCode.RIGHT && defCoordX+iconSize < WIDTH){
@@ -162,6 +179,12 @@ public class GUI extends Application {
         });
     }
     
+    /**
+     * Método encargado de animar el laser de la nave defensora.
+     * 
+     * @param enemyRow : Lista enlazada donde se almacenaran las naves de la hilera
+     * @param lasser : Figura del lasser a dibujar0
+     */
     public void animateLasser(LinkedList enemyRow, Lasser lasser){
         AnimationTimer animator = new AnimationTimer(){
             @Override
@@ -173,25 +196,27 @@ public class GUI extends Application {
                     stop();
                 }
                 else{
-                    Node current = enemyRow.getFlag();
-                    while(current != null){
-                        EnemyShip enemy = current.getData();
-                        if(lasser.intersects(enemy)){
-                            lasser.deleteLasser();
-                            stop();
-                            if(enemy.getIsBoss()){
-                                enemy.setShootsReceived(enemy.getShootsReceived()+1);
-                                if(enemy.getShootsRequired() == enemy.getShootsReceived()){
-                                    enemyRow.deleteAllNodes();
+                    try{
+                        Node current = enemyRow.getFlag();
+                        for (int i = 1; i <= enemyRow.getSize(); i++) {
+                            EnemyShip enemy = current.getData();
+                            if(lasser.intersects(enemy)){
+                                lasser.deleteLasser();
+                                stop();
+                                if(enemy.getIsBoss()){
+                                    enemy.setShootsReceived(enemy.getShootsReceived()+1);
+                                    if(enemy.getShootsRequired() == enemy.getShootsReceived()){
+                                        row.executeBossDestroy();
+                                    }
+                                }else{
+                                    enemy.setLogo(null);
+                                    enemyRow.deleteNode(enemy);
                                 }
-                            }else{
-                                enemy.setLogo(null);
-                                enemyRow.deleteNode(enemy);
+                                row.createEnemyRow(gc);
                             }
-                            row.createEnemyRow(gc);
-                        }
-                        current = current.getNext();
-                    }
+                            current = current.getNext();
+                        }        
+                    }catch(NullPointerException ex){}
                 }
             }
         };
