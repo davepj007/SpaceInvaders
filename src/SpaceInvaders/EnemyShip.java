@@ -101,6 +101,16 @@ public class EnemyShip extends Ship {
      */
     public void setShootsRequired(){
         this.shootsRequired = 2 + (int)(Math.random() * ((5-2)+1));
-        System.out.println("Tiros necesarios " + this.shootsRequired);
+        System.out.print(this.shootsRequired +" ");
+    }
+    
+    /**
+     * Setter, establece la cantidad de disparos que se 
+     * requieren para destruir al jefe de la hilera enemiga.
+     * 
+     * @param shootsRequired : Cantidad de disparos requeridos
+     */
+    public void setShootsRequired(int shootsRequired){
+        this.shootsRequired = shootsRequired;
     }
 }

@@ -70,7 +70,11 @@ public class CircularLinkedList extends LinkedList{
             }
             else{
                 do{
-                    if(current.getNext().getData() == ship){
+                    if(current.getNext().getData() == ship && current.getNext() == tail){
+                        current.setNext(current.getNext().getNext());
+                        tail = current;
+                        size--;
+                    }else if(current.getNext().getData() == ship){
                         current.setNext(current.getNext().getNext());
                         size--;
                     }
@@ -78,6 +82,7 @@ public class CircularLinkedList extends LinkedList{
                         current = current.getNext();
                     }
                 }while(current != tail);
+                
             }
         }catch(NullPointerException ex){
         }

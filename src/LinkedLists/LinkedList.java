@@ -1,7 +1,6 @@
 package LinkedLists;
 
 import SpaceInvaders.EnemyShip;
-import javafx.scene.image.Image;
 
 /**
  * LinkedList: Clase abstracta de lista enlazada 
@@ -51,39 +50,22 @@ public abstract class LinkedList {
     public abstract void deleteNode(EnemyShip ship);
     
     /**
-     * Se encarga de cambiar la posición de los nodos pasados por paramétros dentro
-     * de la lista enlazada. 
-     * 
-     * @param nodeA : Nodo en donde se encuentra el jefe.
-     * @param nodeB : Nodo con quien se intercambiará el jefe.
-     */
-    public void changeNodePosition(Node nodeA, Node nodeB){
-        EnemyShip dataA = nodeA.getData();
-        Image logoA = dataA.getLogo();
-        EnemyShip dataB = nodeB.getData();
-        Image logoB = dataB.getLogo();
-        
-        nodeA.setData(dataB);
-        nodeB.setData(dataA);
-        
-        dataA.setIsBoss(false);
-        dataA.setLogo(logoB);
-        dataB.setIsBoss(true);
-        dataB.setLogo(logoA);
-    }
-    
-    /**
      * Escoge un nodo de la lista de forma aleatoria.
      * 
      * @return Node : Nodo escogido
      */
     public Node chooseRandomNode(){
-        int random = 1 + (int)(Math.random() * ((size-1)));
+        int random = 1 + (int)(Math.random() * ((size-1)+1));
         Node current = this.getFlag();
-        while(current.getNext() != null){
-            if(current.getData().getShipPos() == random){
+        for (int i = 1; i <= this.size; i++) {
+            if(current.getData().getShipPos() == random){                
                 if(current.getData().getIsBoss()){
-                    return current.getNext();
+                    if(current.getNext() == null){
+                        current = current.getPrev();
+                    }else{
+                        current = current.getNext();
+                    }
+                    return current;
                 }else{
                     return current;
                 }
@@ -98,11 +80,29 @@ public abstract class LinkedList {
      */
     public void deleteAllNodes(){
         try{
-            while (this.getFlag() != null) {
+            while(this.getFlag() != null) {
                 Node current = this.getFlag();
                 this.deleteNode(current.getData());
             }
         }catch(NullPointerException ex){
         }
+    }
+    
+    /**
+     * Método encargado de buscar el nodo que contenga el dato pasado por parámetro
+     * 
+     * @param enemy : Dato que debe contener el nodo buscado
+     * @return Node : El nodo encontrado.
+     */
+    public Node searchNode(EnemyShip enemy){
+        Node current = this.getFlag();
+        for (int i = 1; i <= this.getSize(); i++) {
+            if(current.getData() == enemy){
+               break; 
+            }else{
+                current = current.getNext();
+            }
+        }
+        return current;
     }
 }

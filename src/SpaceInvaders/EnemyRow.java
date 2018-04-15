@@ -49,7 +49,7 @@ public abstract class EnemyRow {
                     enemy.setCoordX(posIni);
                     enemyXSpeed *= -1;
                 }
-                else if(enemy.getCoordY() == (525)){
+                else if(enemy.getCoordY() >= (515)){
                     stop();
                 }      
                 

@@ -29,7 +29,6 @@ public class EnemyRowC extends EnemyRow {
     public void createEnemyRow(GraphicsContext gc){
         if(enemyRow.getFlag() == null){
             this.setEnemyRow();
-            this.setEnemyXSpeed(this.getEnemyXSpeed() + 0.10);
             this.setEnemyYSpeed(this.getEnemyYSpeed() + 0.05);
             enemyRow = this.getEnemyRow();
             bool = true;
@@ -73,7 +72,21 @@ public class EnemyRowC extends EnemyRow {
     }
     
     @Override
-    public void executeBossDestroy(){
-    
+    public void executeBossDestroy(){    
+        if(enemyRow.getSize() > 1){
+            EnemyShip oldBoss = this.boss;
+            Image logoBoss = this.boss.getLogo();
+            Node newBoss = enemyRow.chooseRandomNode();
+            
+            oldBoss.setLogo(null);
+            enemyRow.deleteNode(oldBoss);
+
+            this.setBoss(newBoss.getData());
+            newBoss.getData().setShootsRequired();
+            newBoss.getData().setIsBoss(true);
+            newBoss.getData().setLogo(logoBoss);
+        }else{
+            enemyRow.deleteNode(this.boss);
+        }
     }
 }

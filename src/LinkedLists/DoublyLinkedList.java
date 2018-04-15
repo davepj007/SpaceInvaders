@@ -75,7 +75,9 @@ public class DoublyLinkedList extends LinkedList {
                 while(current.getNext() != null){
                     if(current.getNext().getData() == ship){
                         current.getNext().setPrev(null);
-                        current.getNext().getNext().setPrev(current);
+                        if(current.getNext().getNext() != null){
+                            current.getNext().getNext().setPrev(current);
+                        }                        
                         current.setNext(current.getNext().getNext());
                         size--;
                     }

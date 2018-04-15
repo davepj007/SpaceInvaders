@@ -53,7 +53,7 @@ public class GUI extends Application {
     
     double iconSize = 75;
     
-    int level = 3;
+    int level = 4;
 
     public static void main (String[] args){
         launch(args);
@@ -117,7 +117,7 @@ public class GUI extends Application {
      * Y por último llama al método encargado de crear la hilera enemiga.
      */
     public void chooseEnemyRow(){
-        int list = 3;//1 + (int)(Math.random() * ((3-1)+1)); 
+        int list = 2;//1 + (int)(Math.random() * ((3-1)+1)); 
         switch(level){
             case 1:
                 row = new BasicEnemyRow();
@@ -183,7 +183,7 @@ public class GUI extends Application {
      * Método encargado de animar el laser de la nave defensora.
      * 
      * @param enemyRow : Lista enlazada donde se almacenaran las naves de la hilera
-     * @param lasser : Figura del lasser a dibujar0
+     * @param lasser : Figura del lasser a dibujar
      */
     public void animateLasser(LinkedList enemyRow, Lasser lasser){
         AnimationTimer animator = new AnimationTimer(){
@@ -205,12 +205,20 @@ public class GUI extends Application {
                                 stop();
                                 if(enemy.getIsBoss()){
                                     enemy.setShootsReceived(enemy.getShootsReceived()+1);
-                                    if(enemy.getShootsRequired() == enemy.getShootsReceived()){
+                                    if(enemy.getShootsRequired() == enemy.getShootsReceived()){                                        
                                         row.executeBossDestroy();
                                     }
                                 }else{
-                                    enemy.setLogo(null);
-                                    enemyRow.deleteNode(enemy);
+                                    if(enemy.getShootsRequired() != 0){
+                                        enemy.setShootsReceived(enemy.getShootsReceived()+1);
+                                        if(enemy.getShootsRequired() == enemy.getShootsReceived()){
+                                            enemy.setLogo(null);
+                                            enemyRow.deleteNode(enemy);
+                                        }
+                                    }else{
+                                        enemy.setLogo(null);
+                                        enemyRow.deleteNode(enemy);
+                                    }
                                 }
                                 row.createEnemyRow(gc);
                             }

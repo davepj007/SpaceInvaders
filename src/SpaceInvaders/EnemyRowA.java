@@ -30,7 +30,6 @@ public class EnemyRowA extends EnemyRow {
     public void createEnemyRow(GraphicsContext gc){
         if(enemyRow.getFlag() == null){
             this.setEnemyRow();
-            this.setEnemyXSpeed(this.getEnemyXSpeed() + 0.10);
             this.setEnemyYSpeed(this.getEnemyYSpeed() + 0.05);
             enemyRow = this.getEnemyRow();
             bool = true;

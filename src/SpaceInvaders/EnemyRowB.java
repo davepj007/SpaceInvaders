@@ -4,6 +4,7 @@ import LinkedLists.DoublyLinkedList;
 import LinkedLists.Node;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * EnemyRowB : Hilera enemiga clase B
@@ -28,14 +29,18 @@ public class EnemyRowB extends EnemyRow{
     public void createEnemyRow(GraphicsContext gc){
         if(enemyRow.getFlag() == null){
             this.setEnemyRow();
-            this.setEnemyXSpeed(this.getEnemyXSpeed() + 0.10);
             this.setEnemyYSpeed(this.getEnemyYSpeed() + 0.05);
             enemyRow = this.getEnemyRow();
             bool = true;
         }
         
         if(bool == true){
-            this.setBoss(this.chooseBoss(this.enemyRow));
+            if(this.getBoss() != null){
+                this.getBoss().setLogo(new Image("GUI/enemie.png"));
+                this.getBoss().setIsBoss(false);
+            }    
+                
+            this.setBoss(this.chooseBoss(enemyRow));
             this.getBoss().setShootsRequired();
         }
         
@@ -44,11 +49,10 @@ public class EnemyRowB extends EnemyRow{
             EnemyShip enemy = current.getData();
             enemy.render(gc);
             if(bool == true){
-                animateEnemyRow(enemy, gc);
+                this.animateEnemyRow(enemy, gc);
             }
             current = current.getNext();
         }
-        
         this.bool = false;
     }
     
@@ -61,11 +65,12 @@ public class EnemyRowB extends EnemyRow{
             public void handle(long arg0){
                 gc.clearRect(enemy.getCoordX(), enemy.getCoordY(), 900, 700);
                     
-                if(arg0 - lastUpdate >= (1512*1000000)){
+                if(arg0 - lastUpdate >= (2056*1000000)){
                     if(enemy.getIsBoss()){
-                        Node oldBoss = searchBoss();
-                        Node newBoss =  enemyRow.chooseRandomNode();
-                        enemyRow.changeNodePosition(oldBoss, newBoss);
+                        EnemyShip newBoss =  enemyRow.chooseRandomNode().getData();
+                        if(!newBoss.getIsBoss()){
+                            changeBoss(enemy, newBoss);
+                        }
                     }
                 lastUpdate = arg0;
                 }
@@ -81,18 +86,42 @@ public class EnemyRowB extends EnemyRow{
                     enemy.setCoordX(posIni);
                     enemyXSpeed *= -1;
                 }
-                else if(enemy.getCoordY() == 515){
+                else if(enemy.getCoordY() >= 515){
                     stop();
                 }
                 enemy.render(gc);
-                }
+            }
             
         };
         animator.start();
     }
     
     /**
-     * Método encasrgado de buscar el nodo que contiene la nave jefe de la hilera
+     * Método encargado de cambiar al jefe de posición con una nave enemiga aleatoria
+     * 
+     * @param oldBoss : jefe original
+     * @param newBoss : nuevo jefe
+     */
+    public void changeBoss(EnemyShip oldBoss, EnemyShip newBoss){
+        if(enemyRow.getSize() > 1){
+            int shootsReceived = oldBoss.getShootsReceived();
+            int shootsRequired = oldBoss.getShootsRequired();
+            Image bossLogo = oldBoss.getLogo();
+            Image enemyLogo = newBoss.getLogo();
+
+            oldBoss.setIsBoss(false);
+            oldBoss.setLogo(enemyLogo);
+
+            newBoss.setIsBoss(true);
+            newBoss.setLogo(bossLogo);
+            newBoss.setShootsReceived(shootsReceived);
+            newBoss.setShootsRequired(shootsRequired);
+            this.setBoss(newBoss);
+        }
+    }
+    
+    /**
+     * Método encargado de buscar el nodo que contiene la nave jefe de la hilera
      * enemiga
      * 
      * @return Node boss : Nodo que almacena al jefe de la hilera. 
