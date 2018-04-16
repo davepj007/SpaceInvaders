@@ -17,6 +17,9 @@ public class EnemyRowE extends EnemyRow {
      */
     public EnemyRowE(){
         this.enemyRow = new CircularDoublyLinkedList();
+        this.boss = null;
+        this.enemyXSpeed = 2;
+        this.enemyYSpeed = 0.55;
     }
     
     @Override

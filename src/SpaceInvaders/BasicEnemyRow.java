@@ -18,7 +18,7 @@ public class BasicEnemyRow extends EnemyRow{
      */
     public BasicEnemyRow(){
         this.enemyRow = new SimpleLinkedList();
-        this.enemyXSpeed = 1.5;
+        this.enemyXSpeed = 2;
         this.enemyYSpeed = 0.25;
     }
     
@@ -38,9 +38,6 @@ public class BasicEnemyRow extends EnemyRow{
                 this.animateEnemyRow(enemy, gc);
             }
             current = current.getNext();
-        }
-        if(bool == true){
-            this.setBoss(this.chooseBoss(enemyRow));
         }
         this.bool = false;
     }

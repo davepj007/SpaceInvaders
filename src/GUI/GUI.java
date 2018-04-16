@@ -53,7 +53,7 @@ public class GUI extends Application {
     
     double iconSize = 75;
     
-    int level = 4;
+    int level = 1;
 
     public static void main (String[] args){
         launch(args);

@@ -22,7 +22,7 @@ public class EnemyRowB extends EnemyRow{
         this.enemyRow = new DoublyLinkedList();
         this.boss = null;
         this.enemyXSpeed = 2;
-        this.enemyYSpeed = 0.5;
+        this.enemyYSpeed = 0.35;
     }
     
     @Override
