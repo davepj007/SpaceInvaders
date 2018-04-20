@@ -22,7 +22,7 @@ public class EnemyRowB extends EnemyRow{
         this.enemyRow = new DoublyLinkedList();
         this.boss = null;
         this.enemyXSpeed = 2;
-        this.enemyYSpeed = 0.35;
+        this.enemyYSpeed = 0.5;
     }
     
     @Override
@@ -66,8 +66,17 @@ public class EnemyRowB extends EnemyRow{
                 gc.clearRect(enemy.getCoordX(), enemy.getCoordY(), 900, 700);
                     
                 if(arg0 - lastUpdate >= (2056*1000000)){
-                    if(enemy.getIsBoss()){
-                        EnemyShip newBoss =  enemyRow.chooseRandomNode().getData();
+                    EnemyShip newBoss;
+                    if(enemy.getIsBoss() && enemyRow.getSize() > 1){
+                        try{
+                            newBoss =  enemyRow.chooseRandomNode().getData();
+                        }catch(NullPointerException ex){
+                            if(enemy == enemyRow.getFlag().getData()){
+                                newBoss = enemyRow.getFlag().getNext().getData();
+                            }else{
+                                newBoss = enemyRow.getFlag().getData();
+                            }
+                        }
                         if(!newBoss.getIsBoss()){
                             changeBoss(enemy, newBoss);
                         }
@@ -86,7 +95,13 @@ public class EnemyRowB extends EnemyRow{
                     enemy.setCoordX(posIni);
                     enemyXSpeed *= -1;
                 }
-                else if(enemy.getCoordY() >= 515){
+                
+                if(enemy.getCoordY() >= 540){
+                    setEndOfGame(true);
+                    stop();
+                }
+                
+                if(enemy.getLogo() == null){
                     stop();
                 }
                 enemy.render(gc);
@@ -111,6 +126,8 @@ public class EnemyRowB extends EnemyRow{
 
             oldBoss.setIsBoss(false);
             oldBoss.setLogo(enemyLogo);
+            oldBoss.setShootsRequired(0);
+            oldBoss.setShootsReceived(0);
 
             newBoss.setIsBoss(true);
             newBoss.setLogo(bossLogo);

@@ -23,7 +23,7 @@ public class EnemyRowA extends EnemyRow {
         this.enemyRow = new SimpleLinkedList();
         this.boss = null;
         this.enemyXSpeed = 2;
-        this.enemyYSpeed = 0.30;
+        this.enemyYSpeed = 0.4;
     }
     
     @Override

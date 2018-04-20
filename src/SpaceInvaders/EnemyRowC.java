@@ -22,7 +22,7 @@ public class EnemyRowC extends EnemyRow {
         this.enemyRow = new CircularLinkedList();
         this.boss = null;
         this.enemyXSpeed = 2;
-        this.enemyYSpeed = 0.40;
+        this.enemyYSpeed = 0.6;
     }
     
     @Override

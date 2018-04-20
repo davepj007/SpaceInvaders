@@ -22,11 +22,14 @@ import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 
 /**
  * GUI: Interfaz Grafica
@@ -41,19 +44,21 @@ public class GUI extends Application {
     Canvas canvas = new Canvas(900,700);
     GraphicsContext gc;
     
-    EnemyRow row;
-    LinkedList enemyRow;
+    EnemyRow row = null;
+    LinkedList enemyRow = null;
     
     double WIDTH = 900;
-    double HEIGHT = 700;
+    double HEIGHT = 725;
   
     double defCoordX = 400;
-    double defCoordY = 590;
+    double defCoordY = 615;
     double lasserSpeed = 10;
     
     double iconSize = 75;
     
-    int level = 1;
+    String rowClass = "";
+    int countRows = 0;
+    int level = 0;
 
     public static void main (String[] args){
         launch(args);
@@ -84,9 +89,9 @@ public class GUI extends Application {
         
         Line line = new Line();
         line.setStartX(0);
-        line.setStartY(590);
+        line.setStartY(615);
         line.setEndX(WIDTH);
-        line.setEndY(590);
+        line.setEndY(615);
         line.setStroke(Color.DARKCYAN);
         root.getChildren().add(line);
        
@@ -99,53 +104,105 @@ public class GUI extends Application {
         def.setFitWidth(iconSize);
         controlDefenderShip(theScene, def);
         root.getChildren().add(def);
-        //*******************************************************************************************//
-               
-        //******************************** CREA LAS HILERAS ENEMIGAS ********************************//
+        
         gc = canvas.getGraphicsContext2D();
         gc.clearRect(0,0, WIDTH, HEIGHT);
-        chooseEnemyRow();
         
-        //*******************************************************************************************//
+        Label label = new Label(""); 
+        label.setTextFill(Color.WHITE);
+        label.setFont(Font.font("Agency FB", 20));
+        label.setTranslateX(15);
+        
+        new AnimationTimer(){
+            @Override
+            public void handle(long arg0){  
+                if(row != null){
+                    if(row.isEndOfGame()){
+                        stop();
+                        GameOver go = new GameOver();
+                        go.stopGame(theStage);
+                        try {
+                            go.start(new Stage());
+                        }catch (Exception ex) {
+                        }
+                    }
+                }    
+                if(enemyRow != null){
+                    try{
+                        if(enemyRow.getFlag().getData().getCoordY() == 50){
+                            countRows += 1;
+                            System.out.println(countRows);
+                        }
+                    }catch(NullPointerException ex){
+                        countRows += 1;
+                    }
+                }
+                
+                if(countRows%4 == 0){
+                    level += 1;
+                    chooseEnemyRow();
+                    if(countRows == 4){
+                        countRows = 0;
+                    }
+                }
+                label.setText("Level: " + level + " | Actual Row: " + rowClass + " | Coming Row: ");                                     
+            }
+        }.start();
+            
+        HBox hBox = new HBox(10);
+        hBox.setSpacing(10);
+        hBox.getChildren().add(label);
+        root.getChildren().add(hBox);
+        
         root.getChildren().add(canvas); 
-        theStage.show();
+        theStage.show(); 
+        
     }
     
     /**
      * Se encarga de escoger la hilera según el nivel en el que se encuentre el juego.
      * Además de llamar a crear la lista correspondiente al tipo de hilera del nivel.
-     * Y por último llama al método encargado de crear la hilera enemiga.
+     * Y por último llama al método encargado de crear la hilera enemiga. 
      */
     public void chooseEnemyRow(){
-        int list = 2;//1 + (int)(Math.random() * ((3-1)+1)); 
+        int list = 1 + (int)(Math.random() * ((3-1)+1)); 
+        System.out.println("Lista: " + list);
         switch(level){
             case 1:
                 row = new BasicEnemyRow();
+                rowClass = "Basic";
                 break;
             case 2:
-                if (list == 1){
+                if (list != 3){
                     row = new EnemyRowA();
+                    rowClass = "Class A";
                 }else{
                     row = new EnemyRowB();
+                    rowClass = "Class B";
                 }
                 break;
             case 3:
                 if(list != 3){
                     row = new EnemyRowB();
+                    rowClass = "Class B";
                 }else{
                     row = new EnemyRowC();
+                    rowClass = "Class C";
                 }
                 break;
             default:
                 switch(list){
                     case 1:
                         row = new EnemyRowC();
+                        rowClass = "Class C";
                         break;
                     case 2:
                         row = new EnemyRowD();
+                        rowClass = "Class D";
                         break;
                     case 3:
                         row = new EnemyRowE();
+                        rowClass = "Class E";
                         break;
                 }
         }
@@ -220,7 +277,10 @@ public class GUI extends Application {
                                         enemyRow.deleteNode(enemy);
                                     }
                                 }
-                                row.createEnemyRow(gc);
+                                if((countRows+1)%4 != 0 && enemyRow.getFlag() == null){
+                                    System.out.println("Entro");
+                                    chooseEnemyRow();
+                                }
                             }
                             current = current.getNext();
                         }        

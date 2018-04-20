@@ -19,7 +19,7 @@ public class BasicEnemyRow extends EnemyRow{
     public BasicEnemyRow(){
         this.enemyRow = new SimpleLinkedList();
         this.enemyXSpeed = 2;
-        this.enemyYSpeed = 0.25;
+        this.enemyYSpeed = 0.4;
     }
     
     @Override

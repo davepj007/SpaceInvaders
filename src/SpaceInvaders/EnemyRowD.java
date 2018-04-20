@@ -21,7 +21,7 @@ public class EnemyRowD extends EnemyRow {
         this.enemyRow = new CircularLinkedList();
         this.boss = null;
         this.enemyXSpeed = 2;
-        this.enemyYSpeed = 0.5;
+        this.enemyYSpeed = 0.7;
     }
     
     @Override
@@ -96,6 +96,7 @@ public class EnemyRowD extends EnemyRow {
             newBoss.getData().setLogo(logoBoss);
             bubbleSort();
         }else{
+            this.boss.setLogo(null);
             enemyRow.deleteNode(this.boss);
         }
     }

@@ -101,7 +101,6 @@ public class EnemyShip extends Ship {
      */
     public void setShootsRequired(){
         this.shootsRequired = 2 + (int)(Math.random() * ((5-2)+1));
-        System.out.print(this.shootsRequired +" ");
     }
     
     /**

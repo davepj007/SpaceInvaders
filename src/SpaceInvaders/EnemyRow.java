@@ -17,7 +17,8 @@ public abstract class EnemyRow {
     protected double enemyXSpeed;
     protected double enemyYSpeed;
     protected boolean bool;
-    
+    protected boolean endOfGame;
+
     /**
      * Método encargado de crear la hilera enemiga a partir de una lista enlazada.
      * 
@@ -49,9 +50,15 @@ public abstract class EnemyRow {
                     enemy.setCoordX(posIni);
                     enemyXSpeed *= -1;
                 }
-                else if(enemy.getCoordY() >= (515)){
+                
+                if(enemy.getCoordY() >= (540)){
+                    setEndOfGame(true);
                     stop();
-                }      
+                }
+                
+                if(enemy.getLogo() == null){
+                    stop();
+                }
                 
                 enemy.render(gc);
             }
@@ -64,9 +71,9 @@ public abstract class EnemyRow {
      * naves enemigas de la hilera.
      */
     public void setEnemyRow() {
-        int enemyCoordX = 10;
+        int size = 4 + (int)(Math.random() * ((6-4)+1));//Obtiene un num random entre 4 y 6 incluyendo 6 
+        int enemyCoordX = -10*size + 60;
         int enemyCoordY = 50;
-        int size = 5;// + (int)(Math.random() * ((6-4)+1));//Obtiene un num random entre 4 y 6 incluyendo 6     
         for(int i = 1; i <= size; i++){
             EnemyShip enemy = new EnemyShip("/GUI/enemie.png", enemyCoordX, enemyCoordY, i);
             enemyRow.insertEnd(enemy);
@@ -180,5 +187,24 @@ public abstract class EnemyRow {
     public void setBool(boolean bool){
         this.bool = bool;
     }
-
+    
+    /**
+     * Getter, obtiene el valor booleano de la variable para determinar si el 
+     * juego termina o no termina
+     * 
+     * @return boolean endOfGame : true si termina, false si no termina
+     */
+    public boolean isEndOfGame() {
+        return endOfGame;
+    }
+    
+    /**
+     * Setter, establece el valor booleano de la variable endOfGame
+     * 
+     * @param endOfGame : True si el juego termina, false de lo contrario
+     */
+    public void setEndOfGame(boolean endOfGame) {
+        this.endOfGame = endOfGame;
+    }
+    
 }

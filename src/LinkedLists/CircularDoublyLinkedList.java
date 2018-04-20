@@ -41,21 +41,26 @@ public class CircularDoublyLinkedList extends LinkedList {
     public void insertEnd(EnemyShip ship){
         Node newNode = new Node(ship, null, null);
         if(head == null){
+            newNode.setNext(newNode);
+            newNode.setPrev(newNode);
             head = newNode;
+        }
+        else if(head.getNext() == head && head.getPrev() == head){
+            head.setNext(newNode);
+            head.setPrev(newNode);
+            
+            newNode.setNext(head);
+            newNode.setPrev(head);
         }
         else{
             Node current = head;
-            while(current != head){
-                if(current.getNext() == head){
-                    newNode.setPrev(current);
-                    current.setNext(newNode);
-                    newNode.setNext(head);
-                    head.setPrev(newNode);
-                }
-                else{
-                    current = current.getNext();
-                }
+            while(current.getNext() != head){
+                current = current.getNext();
             }
+            newNode.setPrev(current);
+            current.setNext(newNode);
+            newNode.setNext(head);
+            head.setPrev(newNode);
         }
         size++;
     }

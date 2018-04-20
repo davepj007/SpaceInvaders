@@ -60,14 +60,14 @@ public abstract class LinkedList {
         for (int i = 1; i <= this.size; i++) {
             if(current.getData().getShipPos() == random){                
                 if(current.getData().getIsBoss()){
-                    if(current.getNext() == null){
+                    if(current.getNext() == null && current.getPrev() != null){
                         current = current.getPrev();
-                    }else{
+                    }else if (current.getPrev() == null && current.getNext() != null){
                         current = current.getNext();
                     }
-                    return current;
+                    break;
                 }else{
-                    return current;
+                    break;
                 }
             }
             current = current.getNext();
@@ -82,6 +82,7 @@ public abstract class LinkedList {
         try{
             while(this.getFlag() != null) {
                 Node current = this.getFlag();
+                current.getData().setLogo(null);
                 this.deleteNode(current.getData());
             }
         }catch(NullPointerException ex){
