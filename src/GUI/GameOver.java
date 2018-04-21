@@ -5,8 +5,6 @@
  */
 package GUI;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -21,7 +19,9 @@ import javafx.stage.Stage;
  * @author david
  */
 public class GameOver extends Application {
-
+    private int level;
+    private int score;
+    
     @Override
     public void start(Stage GOStage) {
         
@@ -43,7 +43,7 @@ public class GameOver extends Application {
         label.setTranslateY(45);
         root.getChildren().add(label);
         
-        Label label2 = new Label("Score: " + 1500 + " Reached Level: " + 4);
+        Label label2 = new Label("Score: " + score + "  |  Reached Level: " + level);
         label2.setFont(Font.font("Agency FB", 25));
         label2.setTextFill(Color.WHITE);
         label2.setTranslateX(130);
@@ -72,5 +72,13 @@ public class GameOver extends Application {
     
     public void stopGame(Stage theStage){
         theStage.close();
+    }
+    
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    
+    public void setScore(int score) {
+        this.score = score;
     }
 }

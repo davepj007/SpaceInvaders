@@ -56,9 +56,11 @@ public class GUI extends Application {
     
     double iconSize = 75;
     
-    String rowClass = "";
+    String currentRow = "";
+    String nextRow = "Unknown";
     int countRows = 0;
     int level = 0;
+    int score = 0;
 
     public static void main (String[] args){
         launch(args);
@@ -111,7 +113,8 @@ public class GUI extends Application {
         Label label = new Label(""); 
         label.setTextFill(Color.WHITE);
         label.setFont(Font.font("Agency FB", 20));
-        label.setTranslateX(15);
+        label.setTranslateX(10);
+        label.setTranslateY(10);
         
         new AnimationTimer(){
             @Override
@@ -120,6 +123,8 @@ public class GUI extends Application {
                     if(row.isEndOfGame()){
                         stop();
                         GameOver go = new GameOver();
+                        go.setLevel(level);
+                        go.setScore(score);
                         go.stopGame(theStage);
                         try {
                             go.start(new Stage());
@@ -131,7 +136,6 @@ public class GUI extends Application {
                     try{
                         if(enemyRow.getFlag().getData().getCoordY() == 50){
                             countRows += 1;
-                            System.out.println(countRows);
                         }
                     }catch(NullPointerException ex){
                         countRows += 1;
@@ -145,8 +149,9 @@ public class GUI extends Application {
                         countRows = 0;
                     }
                 }
-                label.setText("Level: " + level + " | Actual Row: " + rowClass + " | Coming Row: ");                                     
-            }
+                label.setText("Level: " + level + "  |  Score : " + score + 
+                        "  |  Current Row: " + currentRow + "  |  Next Row: " + nextRow);                                     
+            } 
         }.start();
             
         HBox hBox = new HBox(10);
@@ -166,43 +171,42 @@ public class GUI extends Application {
      */
     public void chooseEnemyRow(){
         int list = 1 + (int)(Math.random() * ((3-1)+1)); 
-        System.out.println("Lista: " + list);
         switch(level){
             case 1:
                 row = new BasicEnemyRow();
-                rowClass = "Basic";
+                currentRow = "Basic";
                 break;
             case 2:
                 if (list != 3){
                     row = new EnemyRowA();
-                    rowClass = "Class A";
+                    currentRow = "Class A";
                 }else{
                     row = new EnemyRowB();
-                    rowClass = "Class B";
+                    currentRow = "Class B";
                 }
                 break;
             case 3:
                 if(list != 3){
                     row = new EnemyRowB();
-                    rowClass = "Class B";
+                    currentRow = "Class B";
                 }else{
                     row = new EnemyRowC();
-                    rowClass = "Class C";
+                    currentRow = "Class C";
                 }
                 break;
             default:
                 switch(list){
                     case 1:
                         row = new EnemyRowC();
-                        rowClass = "Class C";
+                        currentRow = "Class C";
                         break;
                     case 2:
                         row = new EnemyRowD();
-                        rowClass = "Class D";
+                        currentRow = "Class D";
                         break;
                     case 3:
                         row = new EnemyRowE();
-                        rowClass = "Class E";
+                        currentRow = "Class E";
                         break;
                 }
         }
@@ -264,6 +268,7 @@ public class GUI extends Application {
                                     enemy.setShootsReceived(enemy.getShootsReceived()+1);
                                     if(enemy.getShootsRequired() == enemy.getShootsReceived()){                                        
                                         row.executeBossDestroy();
+                                        score += 75;
                                     }
                                 }else{
                                     if(enemy.getShootsRequired() != 0){
@@ -271,10 +276,12 @@ public class GUI extends Application {
                                         if(enemy.getShootsRequired() == enemy.getShootsReceived()){
                                             enemy.setLogo(null);
                                             enemyRow.deleteNode(enemy);
+                                            score += 50;
                                         }
                                     }else{
                                         enemy.setLogo(null);
                                         enemyRow.deleteNode(enemy);
+                                        score += 25;
                                     }
                                 }
                                 if((countRows+1)%4 != 0 && enemyRow.getFlag() == null){
